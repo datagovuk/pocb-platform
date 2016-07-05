@@ -1,17 +1,20 @@
 
+# Setup
 
-# Using the vagrantfile
+## Building the development environment
 
-In order to use the Vagrantfile to boot a Virtualbox
-VM you will need to ensure you are using Vagrant 1.8.4 
-or greater and have Ansible 2.1+ installed.
+To build the development environment, you will need to have the following 
+software installed:
 
-WORKAROUND: The Ubuntu Xenial image isn't quite complete, so there 
-is a slight issue in bringing up the VM where it needs 
-to be multi-step. This will be unnecessary when Ubuntu fix their
-cloud image.
+* Virtualbox (recent)
+* Vagrant (vagrantup.com) v1.8.4+
+* Ansible (pip install ansible) v2.1+
 
-```
+Due to a (temporary) problem with Ubuntu's Xenial image, the setup is 
+currently a 2 phase setup, but only needs to be completed once. When 
+the image is fixed, we can fix the process.
+
+```bash
 vagrant up
 # Previous step will show an error, but ...
 vagrant ssh
@@ -20,3 +23,10 @@ exit
 vagrant reload
 ```
 
+## Activating the virtual environments
+
+Each app (frontend and pubtool) has its own virtualenv in ```/usr/lib/dgu/{pubtool,frontend}```. The appropriate virtualenv should be activated before you work on it, this might look like 
+
+```
+. /usr/lib/dgu/frontend/bin/activate
+```

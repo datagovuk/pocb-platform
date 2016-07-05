@@ -13,4 +13,4 @@
     - supervisor
 
 - name: Python virtualenv
-  command: virtualenv /usr/lib/olaf/ -p python3.4 creates="/usr/lib/dgu-pubtool/"
+  command: virtualenv /usr/lib/dgu/pubtool/ -p python3.5 creates="/usr/lib/dgu/pubtool/"

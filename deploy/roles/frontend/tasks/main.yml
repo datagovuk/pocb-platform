@@ -13,4 +13,4 @@
     - supervisor
 
 - name: Python virtualenv
-  command: virtualenv /usr/lib/olaf/ -p python3.4 creates="/usr/lib/dgu-frontend/"
+  command: virtualenv /usr/lib/dgu/frontend/ -p python3.5 creates="/usr/lib/dgu/frontend/"
