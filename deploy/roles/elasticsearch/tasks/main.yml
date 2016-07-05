@@ -1,0 +1,26 @@
+- name: Add ElasticSearch key
+  apt_key: id=D88E42B4 url=https://packages.elastic.co/GPG-KEY-elasticsearch state=present
+
+- name: Add ElasticSearch repo
+  apt_repository: repo='deb http://packages.elastic.co/elasticsearch/2.x/debian stable main' state=present
+
+- name: Install Search Packages
+  apt: name={{ item }} state=present update_cache=yes cache_valid_time=3600
+  with_items:
+    - elasticsearch
+    - nginx
+    - openjdk-8-jre
+
+- name: Start Search Services
+  service: name={{ item }} state=started
+  with_items:
+    - elasticsearch
+    - nginx
+
+- name: Remove default nginx config file
+  file: path=/etc/nginx/sites-enabled/default state=absent
+
+- name: nginx config file
+  template: src=files/search-nginx.conf dest=/etc/nginx/sites-enabled/dgu.conf owner=root group=root mode=0644
+  notify:
+  - restart nginx

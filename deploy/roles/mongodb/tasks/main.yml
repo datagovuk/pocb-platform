@@ -1,0 +1,24 @@
+
+- name: Add Mongo key
+  apt_key: id=EA312927 keyserver=hkp://keyserver.ubuntu.com:80 state=present
+
+- name: Add mongo repo
+  apt_repository: repo='deb http://repo.mongodb.org/apt/ubuntu xenial/mongodb-org/3.2 multiverse' state=present update_cache=yes
+
+
+- name: Install Mongodb
+  apt: name={{ item }} state=present update_cache=yes cache_valid_time=3600 allow_unauthenticated=yes
+  with_items:
+    - mongodb-org
+
+- name: systemd setup for mongodb
+  copy: src=files/mongodb.service dest=/etc/systemd/system/mongodb.service owner=root group=root mode=0644
+
+- name: Unmask mongodb
+  raw: sudo systemctl unmask mongodb
+
+- name: Enable mongodb at startup
+  raw: sudo systemctl enable mongodb
+
+- name: (re)start mongodb
+  raw: sudo systemctl restart mongodb

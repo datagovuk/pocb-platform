@@ -1,0 +1,6 @@
+
+- name: restart ElasticSearch
+  service: name=uwsgi state=restarted
+  
+- name: restart nginx
+  service: name=nginx state=restarted

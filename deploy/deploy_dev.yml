@@ -1,0 +1,39 @@
+- name: python2
+  hosts:
+    - search
+    - database
+  gather_facts: no
+  pre_tasks:
+    - raw: sudo apt-get -y install python-simplejson
+    - name: Update hosts
+      lineinfile: dest=/etc/hosts regexp='^127\.0\.1\.1' line='127.0.1.1 ubuntu-xenial' owner=root group=root mode=0644
+      sudo: yes
+
+- name: install MongoDB
+  sudo: yes
+  user: vagrant
+  hosts: database
+  roles:
+    - mongodb
+
+- name: install and configure ElasticSearch
+  sudo: yes
+  user: vagrant
+  hosts: search
+  roles:
+    - elasticsearch
+
+- name: install frontend
+  sudo: yes
+  user: vagrant
+  hosts: frontend
+  roles:
+    - frontend
+
+- name: install pubtool
+  sudo: yes
+  user: vagrant
+  hosts: pubtool
+  roles:
+    - pubtool
+
