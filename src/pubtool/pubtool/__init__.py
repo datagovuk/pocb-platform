@@ -1,21 +1,18 @@
 from flask import Flask, render_template, current_app, Blueprint, redirect
 
+from pubtool.routes import create_routes
+
 app = Flask(__name__)
 app.config.from_object("pubtool.config.DevelopmentConfig")
 app.config['PROPAGATE_EXCEPTIONS'] = True
 
-#create_routes(app)
-#create_filters(app)
 bp = Blueprint('pubtool', __name__,
                         template_folder='templates')
+create_routes(bp)
 
 @app.route('/')
 def home():
     return redirect('/manage')
-
-@bp.route('/')
-def home():
-    return render_template("index.html")
 
 @app.errorhandler(404)
 def page_not_found(e):
