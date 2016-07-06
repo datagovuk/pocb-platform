@@ -14,3 +14,31 @@
 
 - name: Python virtualenv
   command: virtualenv /usr/lib/dgu/frontend/ -p python3.5 creates="/usr/lib/dgu/frontend/"
+
+- name: Python packages
+  pip: requirements=/home/ubuntu/apps/frontend/requirements/dev.txt virtualenv=/usr/lib/dgu/frontend
+  notify:
+  - restart uWSGI
+
+- name: uWSGI config file
+  template: src=files/frontend-uwsgi.ini
+            dest=/etc/uwsgi/apps-enabled/frontend.ini
+            owner=root
+            group=root
+            mode=0644
+  notify:
+  - restart uWSGI
+
+- name: Remove default nginx config file
+  file: path=/etc/nginx/sites-enabled/default state=absent
+
+- name: nginx config file
+  template: src=files/frontend-nginx.conf dest=/etc/nginx/sites-enabled/frontend.conf owner=root group=root mode=0644
+  notify:
+  - restart nginx
+
+- name: Start services
+  service: name={{ item }} state=started
+  with_items:
+    - nginx
+    - uwsgi

@@ -34,7 +34,15 @@ Each app (frontend and pubtool) has its own virtualenv in ```/usr/lib/dgu/{pubto
 ## Starting pubtool for development
 
 ```bash
-cd ~/apps/pubtool
-python manage.py runserver
-# Go to http://192.168.2.2:5000/ in your browser
+cd ~/apps/
+./pubtool-run.sh
+# Go to http://192.168.2.2:5001/ in your browser
+```
+
+## Starting frontend for development
+
+```bash
+cd ~/apps/
+./frontend-run.sh
+# Go to http://192.168.2.2:5002/ in your browser
 ```
