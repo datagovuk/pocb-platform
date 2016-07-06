@@ -1,0 +1,5 @@
+- name: restart uWSGI
+  service: name=uwsgi state=restarted
+
+- name: restart nginx
+  service: name=nginx state=restarted

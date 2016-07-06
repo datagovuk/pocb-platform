@@ -15,12 +15,3 @@
   service: name={{ item }} state=started
   with_items:
     - elasticsearch
-    - nginx
-
-- name: Remove default nginx config file
-  file: path=/etc/nginx/sites-enabled/default state=absent
-
-- name: nginx config file
-  template: src=files/search-nginx.conf dest=/etc/nginx/sites-enabled/dgu.conf owner=root group=root mode=0644
-  notify:
-  - restart nginx
