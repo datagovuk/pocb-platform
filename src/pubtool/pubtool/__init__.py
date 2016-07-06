@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, current_app
 
 app = Flask(__name__)
 app.config.from_object("pubtool.config.DevelopmentConfig")
@@ -9,4 +9,5 @@ app.config['PROPAGATE_EXCEPTIONS'] = True
 
 @app.route('/')
 def home():
+    print( current_app.config["ELASTIC_HOSTS"])
     return render_template("index.html")

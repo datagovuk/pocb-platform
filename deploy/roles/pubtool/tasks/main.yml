@@ -29,6 +29,15 @@
   notify:
   - restart uWSGI
 
+- name: dotenv config file
+  template: src=files/pubtool.dotenv
+            dest=/home/ubuntu/apps/pubtool/.env
+            owner={{ansible_ssh_user}}
+            mode=0644
+  notify:
+  - restart uWSGI
+
+
 - name: Remove default nginx config file
   file: path=/etc/nginx/sites-enabled/default state=absent
 

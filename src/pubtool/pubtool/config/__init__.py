@@ -1,12 +1,14 @@
 import os
 from dotenv import load_dotenv
 
-#dotenv_path = os.path.join(os.path.dirname(__file__), '../../..', '.env')
-#load_dotenv(dotenv_path)
+dotenv_path = os.path.join(os.path.dirname(__file__), '../..', '.env')
+load_dotenv(dotenv_path)
 
 class Config(object):
     DEBUG = False
     TESTING = False
+    ELASTIC_HOSTS = os.environ.get('ELASTIC_HOSTS', '["127.0.0.1"]')
+    MONGODB_URL = os.environ.get('MONGODB_URL', '127.0.0.1')
 
 class DevelopmentConfig(Config):
     DEBUG = True
