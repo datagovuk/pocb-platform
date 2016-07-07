@@ -1,10 +1,13 @@
 from flask import Flask, render_template, current_app, Blueprint, redirect
 
 from pubtool.routes import create_routes
+from pubtool.database import mongo
 
 app = Flask(__name__)
 app.config.from_object("pubtool.config.DevelopmentConfig")
 app.config['PROPAGATE_EXCEPTIONS'] = True
+
+mongo.init_app(app)
 
 bp = Blueprint('pubtool', __name__,
                         template_folder='templates')
