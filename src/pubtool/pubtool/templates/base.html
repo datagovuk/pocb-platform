@@ -78,6 +78,12 @@
       <span>This is a new service – your <a href="#">feedback</a> will help us to improve it.</span>
     </p>
 
+{% block breadcrumbs_outer %}
+<div class="breadcrumbs">
+  {% block breadcrumbs %}
+  {% endblock %}
+</div>
+{% endblock %}
 
   </div>
 

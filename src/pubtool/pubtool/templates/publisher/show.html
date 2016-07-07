@@ -7,6 +7,13 @@ Publishers
 {% block optional_head %}
 {% endblock %}
 
+{% block breadcrumbs %}
+  <ol>
+    <li><a href="/manage/publisher">Publishers</a></li>
+    <li>{{publisher.name}}</li>
+  </ol>
+{% endblock %}
+
 {% block content %}
 
 <h1 class="heading-xlarge" style="margin-bottom: 12px;">
