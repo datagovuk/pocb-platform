@@ -14,8 +14,13 @@ class Publisher(LogicObject):
     def update(self, id):
         pass
 
-    def delete(self, id):
-        pass
+    @classmethod
+    def delete(cls, id):
+        object = Publisher.get(id)
+        if not object: return None
+
+        mongo.db.publishers.delete_one({'slug': id})
+        return cls.clean(object)
 
     @classmethod
     def list(cls):

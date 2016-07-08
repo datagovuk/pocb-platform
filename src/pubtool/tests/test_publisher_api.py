@@ -35,18 +35,29 @@ class PublisherApiTest(BaseTest):
         self.assertEqual(response.status_code, 404)
 
     '''
-    def test_delete_fail_404(self):
-        pass
-
     def test_delete_fail_noauth(self):
         pass
     '''
+
+    def test_delete_fail_404(self):
+        response = self.do_post('/api/v1/publisher/fake?_method=delete', data=None)
+        self.assertEqual(response.status_code, 404)
+
+
     def test_delete_ok(self):
         response = self.do_post('/api/v1/publisher/testpub?_method=delete', data=None)
         self.assertEqual(response.status_code, 200)
 
         body = self.response_as_json(response)
         self.assertEquals(body['success'], True)
+
+        # Check it has disappeared from the list
+        response = self.do_get('/api/v1/publisher')
+        self.assertEqual(response.status_code, 200)
+
+        body = self.response_as_json(response)
+        self.assertEquals(len(body['data']), 1)
+
 
         self.mongo.db.publishers.insert_one({'name': 'Test Publisher', 'slug': 'testpub'})
 

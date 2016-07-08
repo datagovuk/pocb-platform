@@ -39,6 +39,7 @@ def api_home():
 # element of the tuple, and the function to call is the second element.
 API = (
     (re.compile("publisher/(.*)"),  Publisher.get, ["GET"]),
+    (re.compile("publisher/(.*)"),  Publisher.delete, ["DELETE"]),
     (re.compile("publisher$"),      Publisher.list, ["GET"]),
 )
 
@@ -58,8 +59,6 @@ def api_call(path):
         if not m:
             continue
 
-        #print (request.method)
-        #print(allowed_verbs)
         if not request.method in allowed_verbs:
             continue
 
