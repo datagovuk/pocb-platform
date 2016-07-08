@@ -58,6 +58,6 @@ class PublisherApiTest(BaseTest):
         body = self.response_as_json(response)
         self.assertEquals(len(body['data']), 1)
 
-
+        # Put the data back before other tests run
         self.mongo.db.publishers.insert_one({'name': 'Test Publisher', 'slug': 'testpub'})
 

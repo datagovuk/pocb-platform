@@ -1,12 +1,20 @@
 from flask import (Flask,
     render_template, current_app, Blueprint, redirect, _request_ctx_stack, request)
 
+from flask.ext.login import LoginManager
 from pubtool.routes import create_routes
 from pubtool.database import mongo
 
 app = Flask(__name__)
 app.config.from_object("pubtool.config.DevelopmentConfig")
 app.config['PROPAGATE_EXCEPTIONS'] = True
+
+login_manager = LoginManager()
+login_manager.init_app(app)
+
+@login_manager.user_loader
+def load_user(user_id):
+    return {}
 
 mongo.init_app(app)
 

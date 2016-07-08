@@ -2,6 +2,7 @@ import json
 
 from flask import Flask, current_app, request, _request_ctx_stack
 from flask.ext.testing import TestCase
+from flask.ext.login import LoginManager
 from elasticsearch import Elasticsearch
 from elasticsearch.client import IndicesClient
 
@@ -28,13 +29,12 @@ class BaseTest(TestCase):
 
         app.before_request(before_request)
 
-        #login_manager = LoginManager()
-        #login_manager.init_app(app)
+        login_manager = LoginManager()
+        login_manager.init_app(app)
 
-        #@login_manager.user_loader
-        #def load_user(user_id):
-        #   from olaf.models import User
-        #    return db.session.query(User).filter(User.id==user_id).first()
+        @login_manager.user_loader
+        def load_user(user_id):
+            return {}
 
         create_routes(app)
 
