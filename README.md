@@ -55,3 +55,16 @@ cd ~/apps/
 ./frontend-run.sh
 # Go to http://192.168.2.2:5002/ in your browser
 ```
+
+# Data 
+
+The data for the objects used by the pubtool are help in MongoDB and can be found in the relevant collections (documented in the table below). When data is referenced from one collection to another, this is done by the object_id but should be minimal.
+
+| Collection  |  Contains |
+|---|---|
+| publishers | Details about the publishing organisations that interact with the pubtool |
+| datasets  |   |
+| users  |   |
+
+
+

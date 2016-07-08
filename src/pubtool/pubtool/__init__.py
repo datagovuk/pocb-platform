@@ -29,4 +29,13 @@ def internal_error(e):
 def permission_denied(e):
     return render_template('401.html'), 401
 
+@app.before_request
+def before_request():
+    method = request.form.get('_method', '').upper()
+    if method:
+        request.environ['REQUEST_METHOD'] = method
+        ctx = flask._request_ctx_stack.top
+        ctx.url_adapter.default_method = method
+        assert request.method == method
+
 app.register_blueprint(bp, url_prefix='/manage')
