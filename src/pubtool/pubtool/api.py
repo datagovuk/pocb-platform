@@ -17,14 +17,14 @@ def _api_error(errors):
     return jsonify({
         'errors': errors,
         'success': False
-    })
+    }), 404
 
 def api_home():
     return jsonify({'version': 1})
 
 API = (
     (re.compile("publisher/(.*)"), Publisher.get),
-    (re.compile("publisher"), Publisher.list),
+    (re.compile("publisher$"), Publisher.list),
 )
 
 def api_call(path):

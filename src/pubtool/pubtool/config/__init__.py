@@ -10,6 +10,10 @@ class Config(object):
     ELASTIC_HOSTS = os.environ.get('ELASTIC_HOSTS', '["127.0.0.1"]')
     MONGO_HOST = os.environ.get('MONGODB_URL', '127.0.0.1')
 
+class TestingConfig(Config):
+    DEBUG = True
+    TESTING = True
+
 class DevelopmentConfig(Config):
     DEBUG = True
 
