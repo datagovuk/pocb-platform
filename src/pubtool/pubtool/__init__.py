@@ -1,4 +1,5 @@
-from flask import Flask, render_template, current_app, Blueprint, redirect
+from flask import (Flask,
+    render_template, current_app, Blueprint, redirect, _request_ctx_stack, request)
 
 from pubtool.routes import create_routes
 from pubtool.database import mongo
@@ -31,10 +32,10 @@ def permission_denied(e):
 
 @app.before_request
 def before_request():
-    method = request.form.get('_method', '').upper()
+    method = request.args.get('_method', '').upper()
     if method:
         request.environ['REQUEST_METHOD'] = method
-        ctx = flask._request_ctx_stack.top
+        ctx = _request_ctx_stack.top
         ctx.url_adapter.default_method = method
         assert request.method == method
 

@@ -40,7 +40,7 @@ class PublisherApiTest(BaseTest):
 
     def test_delete_fail_noauth(self):
         pass
-
+    '''
     def test_delete_ok(self):
         response = self.do_post('/api/v1/publisher/testpub?_method=delete', data=None)
         self.assertEqual(response.status_code, 200)
@@ -48,5 +48,5 @@ class PublisherApiTest(BaseTest):
         body = self.response_as_json(response)
         self.assertEquals(body['success'], True)
 
-        self.mongo.db.publishers.insert_one({'name': 'Test Publisher', 'slug': 'testpub'}}
-    '''
+        self.mongo.db.publishers.insert_one({'name': 'Test Publisher', 'slug': 'testpub'})
+

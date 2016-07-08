@@ -1,12 +1,20 @@
 import json
 
-from flask import Flask, current_app
+from flask import Flask, current_app, request, _request_ctx_stack
 from flask.ext.testing import TestCase
 from elasticsearch import Elasticsearch
 from elasticsearch.client import IndicesClient
 
 from pubtool.database import mongo
 from pubtool.routes import create_routes
+
+def before_request():
+    method = request.args.get('_method', '').upper()
+    if method:
+        request.environ['REQUEST_METHOD'] = method
+        ctx = _request_ctx_stack.top
+        ctx.url_adapter.default_method = method
+        assert request.method == method
 
 class BaseTest(TestCase):
 
@@ -17,6 +25,8 @@ class BaseTest(TestCase):
         app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
         app.config['PROPAGATE_EXCEPTIONS'] = True
         mongo.init_app(app)
+
+        app.before_request(before_request)
 
         #login_manager = LoginManager()
         #login_manager.init_app(app)

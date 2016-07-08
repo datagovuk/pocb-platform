@@ -38,8 +38,8 @@ def api_home():
 # that can be made by a user.  The API is found by a match on the first
 # element of the tuple, and the function to call is the second element.
 API = (
-    (re.compile("publisher/(.*)"),  Publisher.get),
-    (re.compile("publisher$"),      Publisher.list),
+    (re.compile("publisher/(.*)"),  Publisher.get, ["GET"]),
+    (re.compile("publisher$"),      Publisher.list, ["GET"]),
 )
 
 def api_call(path):
@@ -53,9 +53,14 @@ def api_call(path):
 
     # Iterate through all the known URLs until we find a path that matches.
     # We're not expecting many
-    for k, f in API:
+    for k, f, allowed_verbs in API:
         m = k.match(path)
         if not m:
+            continue
+
+        #print (request.method)
+        #print(allowed_verbs)
+        if not request.method in allowed_verbs:
             continue
 
         # If it is a path with an argument, then call the function passing in the
@@ -66,10 +71,10 @@ def api_call(path):
         else:
             result = f()
 
-        if result:
-            return _api_success(result)
-        else:
+        if not result and not result == []:
             return _api_error(["Unable to locate the requested item"])
+        else:
+            return _api_success(result)
 
     return _api_error(["Unknown API call"])
 
