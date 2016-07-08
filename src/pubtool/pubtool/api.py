@@ -33,11 +33,10 @@ def _api_error(errors, status_code=404):
 def api_home():
     return jsonify({'version': 1})
 
-'''
-This tuple contains a list of tuples representing the possible API calls
-that can be made by a user.  The API is found by a match on the first
-element of the tuple, and the function to call is the second element.
-'''
+
+# This tuple contains a list of tuples representing the possible API calls
+# that can be made by a user.  The API is found by a match on the first
+# element of the tuple, and the function to call is the second element.
 API = (
     (re.compile("publisher/(.*)"),  Publisher.get),
     (re.compile("publisher$"),      Publisher.list),
