@@ -1,0 +1,22 @@
+{
+    "title": "Publisher Schema",
+    "type": "object",
+    "required": [
+        "name",
+        "title"
+    ],
+    "properties": {
+        "name": {
+            "description": "The short name of the publisher used in URLs",
+            "type": "string"
+        },
+        "title": {
+            "description": "The full title of the publisher, e.g Cabinet Office",
+            "type": "string"
+        },
+        "url": {
+            "description": "Home page for the publisher",
+            "type": "string"
+        }
+    }
+}

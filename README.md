@@ -56,6 +56,18 @@ cd ~/apps/
 # Go to http://192.168.2.2:5002/ in your browser
 ```
 
+# Schema 
+
+Entities within the system are represented using jsonschema 
+definitions which allow us to be flexible in what we store, 
+as well as enabling validation of inputs to the system.
+
+## Publisher 
+
+The publisher schema can be found in ```schema/publisher.json```
+
+
+
 # Data 
 
 The data for the objects used by the pubtool are help in MongoDB and can be found in the relevant collections (documented in the table below). When data is referenced from one collection to another, this is done by the object_id but should be minimal.
@@ -63,8 +75,8 @@ The data for the objects used by the pubtool are help in MongoDB and can be foun
 | Collection  |  Contains |
 |---|---|
 | publishers | Details about the publishing organisations that interact with the pubtool |
-| datasets  |   |
-| users  |   |
+| datasets  | Datasets  |
+| users  | Users |
 
 
 

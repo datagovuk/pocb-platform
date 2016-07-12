@@ -16,6 +16,8 @@ class Publisher(LogicObject):
 
     @classmethod
     def delete(cls, id):
+        # TODO: We should probably just return a bool or something here
+        # because atomic ops or something.
         object = Publisher.get(id)
         if not object: return None
 
