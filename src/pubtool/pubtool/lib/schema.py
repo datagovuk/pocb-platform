@@ -33,13 +33,10 @@ def _get_schema(name):
     loaded_schema = SCHEMA.get(name)
     if not loaded_schema:
         filename = "{}/{}.json".format(_get_directory(), name)
-        if not os.path.exists(filename):
-            # TODO: Log error
-            return None
+        if os.path.exists(filename):
+            SCHEMA[name] = json.load(open(filename, 'r'))
 
-        SCHEMA[name] = json.load(open(filename, 'r'))
-
-    return SCHEMA[name]
+    return SCHEMA.get(name)
 
 def validation_check(object_type, data):
     from jsonschema import Draft4Validator
@@ -61,4 +58,5 @@ def validation_check(object_type, data):
 
     errors = sorted(validator.iter_errors(data), key=lambda e: e.path)
     errors = [v.message for v in errors]
+
     return errors
