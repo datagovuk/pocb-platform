@@ -3,6 +3,7 @@ import re
 from flask import jsonify, request
 from pubtool.database import mongo
 from pubtool.logic import Publisher
+from pubtool.lib.schema import ObjectValidationErrors
 
 def _api_success(response, extra=None):
     '''
@@ -66,11 +67,21 @@ def api_call(path):
 
         # If it is a path with an argument, then call the function passing in the
         # arguments
-        if m.groups():
-            args = [a for a in m.groups()]
-            result = f(*args)
-        else:
-            result = f()
+        try:
+            args = []
+            if m.groups():
+                args = [a for a in m.groups()]
+
+            if request.headers.get('content-type') == 'application/json':
+                args.append(request.json)
+
+            if args:
+                result = f(*args)
+            else:
+                result = f()
+
+        except ObjectValidationErrors as validation_error:
+            return _api_error(validation_error.errors, status_code=400)
 
         if not result and not result == []:
             return _api_error(["Unable to locate the requested item"])

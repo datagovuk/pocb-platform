@@ -56,11 +56,11 @@ class BaseTest(TestCase):
     def do_get(self, url, json=False):
         return self.test_app.get(url)
 
-    def do_post(self, url, data, json=False):
+    def do_post(self, url, data, is_json=False):
         headers = {}
-        if json:
+        if is_json:
             headers = {'content-type':'application/json'}
-        return self.test_app.get(url, headers=headers, data=data)
+        return self.test_app.post(url, headers=headers, data=json.dumps(data), follow_redirects=True)
 
     def response_as_json(self, response):
         import json

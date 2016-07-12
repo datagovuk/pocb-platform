@@ -5,13 +5,19 @@ the jsonschema and allows callers to validate a dictionary against them.
 import os
 import json
 
-from jsonschema import validate
+import pubtool.lib.validators as v
+
+from jsonschema import validate, validators
 from jsonschema.exceptions import ValidationError
 
 SCHEMA = {
     "publisher": None,
     "dataset": None
 }
+
+class ObjectValidationErrors(Exception):
+    def __init__(self, errors):
+        self.errors = errors
 
 def _get_directory():
     p = os.path.dirname(__file__)
@@ -43,7 +49,16 @@ def validation_check(object_type, data):
         # raise ValidationError, not Exception
         raise Exception()
 
-    v = Draft4Validator(schema)
-    errors = sorted(v.iter_errors(data), key=lambda e: e.path)
+    new_validators = {
+        'unique_publisher': v.unique_publisher_validator,
+    }
+
+    custom_validator = validators.extend(
+        Draft4Validator,
+        validators=new_validators
+    )
+    validator = custom_validator(schema)
+
+    errors = sorted(validator.iter_errors(data), key=lambda e: e.path)
     errors = [v.message for v in errors]
     return errors
