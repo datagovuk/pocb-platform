@@ -38,7 +38,9 @@ def api_home():
 # that can be made by a user.  The API is found by a match on the first
 # element of the tuple, and the function to call is the second element.
 API = (
+    (re.compile("publisher/new$"),  Publisher.create, ["POST"]),
     (re.compile("publisher/(.*)"),  Publisher.get, ["GET"]),
+    (re.compile("publisher/(.*)"),  Publisher.update, ["POST"]),
     (re.compile("publisher/(.*)"),  Publisher.delete, ["DELETE"]),
     (re.compile("publisher$"),      Publisher.list, ["GET"]),
 )

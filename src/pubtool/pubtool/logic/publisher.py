@@ -1,18 +1,19 @@
 from .base import LogicObject
 
 from pubtool.database import mongo
+from pubtool.lib.schema import validation_check
 
 class Publisher(LogicObject):
 
     def create(self, data):
-        pass
+        errors = validation_check("publisher", data)
 
     @classmethod
     def get(cls, id):
         return cls.clean(mongo.db.publishers.find_one({'slug': id}))
 
     def update(self, id):
-        pass
+        errors = validation_check("publisher", data)
 
     @classmethod
     def delete(cls, id):

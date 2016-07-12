@@ -17,7 +17,8 @@ class SchemaTest(BaseTest):
     def test_validate_publisher_fail_required(self):
         publisher_data = {}
         res = s.validation_check("publisher", publisher_data)
-        assert len(res) > 0
+        assert res == ["'name' is a required property",
+            "'title' is a required property"], res
 
     def test_validate_publisher_fail_types(self):
         publisher_data = {
