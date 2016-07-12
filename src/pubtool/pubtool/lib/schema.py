@@ -46,9 +46,7 @@ def validation_check(object_type, data):
         # raise ValidationError, not Exception
         raise Exception()
 
-    new_validators = {
-        'unique_publisher': v.unique_publisher_validator,
-    }
+    new_validators = v.load_validators()
 
     custom_validator = validators.extend(
         Draft4Validator,

@@ -9,7 +9,8 @@
         "name": {
             "description": "The short name of the publisher used in URLs",
             "type": "string",
-            "unique_publisher": true
+            "unique_publisher": true,
+            "slug": true
         },
         "title": {
             "description": "The full title of the publisher, e.g Cabinet Office",

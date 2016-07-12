@@ -50,6 +50,14 @@ class PublisherApiTest(BaseTest):
         assert body['errors'] == ["'title' is a required property",
             "'name' is already in use"]
 
+    def test_create_fail_slug(self):
+        publisher = { 'name': '!!!!', 'title': 'A title field!'}
+        response = self.do_post('/api/v1/publisher/new', data=publisher, is_json=True)
+        self.assertEqual(response.status_code, 400)
+
+        body = self.response_as_json(response)
+        assert body['success'] == False
+        assert body['errors'] == ["'name' should consist only of lowercase letters, numbers, underscores or hyphens"]
 
     def test_show_ok(self):
         response = self.do_get('/api/v1/publisher/testpub')
