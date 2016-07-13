@@ -16,6 +16,10 @@ class LogicObject(object):
         ''' Returns the data object with the given id '''
         pass
 
+    def search(cls):
+        ''' Uses the flask object to find out what the parameters are '''
+        pass
+
     def update(self, id, data):
         ''' Update the object identified by id with the data provided '''
         pass
