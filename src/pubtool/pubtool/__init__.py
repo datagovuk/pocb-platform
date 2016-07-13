@@ -4,6 +4,7 @@ from flask import (Flask,
 from flask.ext.login import LoginManager
 from pubtool.routes import create_routes
 from pubtool.database import mongo
+from pubtool.search import init_search
 
 app = Flask(__name__)
 app.config.from_object("pubtool.config.DevelopmentConfig")
@@ -17,6 +18,7 @@ def load_user(user_id):
     return {}
 
 mongo.init_app(app)
+init_search(app)
 
 bp = Blueprint('pubtool', __name__,
                         template_folder='templates')

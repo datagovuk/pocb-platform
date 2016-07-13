@@ -3,9 +3,8 @@ import json
 from flask import Flask, current_app, request, _request_ctx_stack
 from flask.ext.testing import TestCase
 from flask.ext.login import LoginManager
-from elasticsearch import Elasticsearch
-from elasticsearch.client import IndicesClient
 
+from pubtool.search import init_search, clear_index
 from pubtool.database import mongo
 from pubtool.routes import create_routes
 
@@ -27,6 +26,9 @@ class BaseTest(TestCase):
         app.config['PROPAGATE_EXCEPTIONS'] = True
         mongo.init_app(app)
 
+        #mongo.db.publishers.remove({})
+
+        init_search(app)
         app.before_request(before_request)
 
         login_manager = LoginManager()
@@ -40,14 +42,15 @@ class BaseTest(TestCase):
 
         self.test_app = app.test_client()
         self.test_app.testing = True
-
+        self.app = app
         return app
 
     def setUp(self):
         self.create_localtest_data(mongo)
 
     def tearDown(self):
-        # Remove Test Index from Elastic
+        # Remove Test Index from Elastic and database
+        clear_index(self.app)
         mongo.db.publishers.remove({})
 
     def create_localtest_data(self, mongo):

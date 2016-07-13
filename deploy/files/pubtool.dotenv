@@ -1,3 +1,3 @@
 {% set comma = joiner(",") %}
-ELASTIC_HOSTS='[{% for host in groups["search"] %}{{comma()}}"{{hostvars[host]|ipaddress}}"{% endfor %}]'
+ELASTIC_HOSTS='["127.0.0.1"]'
 MONGODB_URL='127.0.0.1'
