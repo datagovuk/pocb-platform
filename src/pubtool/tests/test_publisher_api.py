@@ -105,3 +105,10 @@ class PublisherApiTest(BaseTest):
 
         # Put the data back before other tests run
         self.mongo.db.publishers.insert_one({'name': 'Test Publisher', 'slug': 'testpub'})
+
+    def test_search_ok(self):
+        response = self.do_get('/api/v1/publisher/search?q=test')
+        self.assertEqual(response.status_code, 200)
+
+        body = self.response_as_json(response)
+        print(body)

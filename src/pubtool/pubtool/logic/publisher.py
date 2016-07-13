@@ -2,7 +2,7 @@ from .base import LogicObject
 
 from pubtool.database import mongo
 from pubtool.lib.schema import validation_check, ObjectValidationErrors
-from pubtool.search import index_item, delete_item
+from pubtool.search import index_item, delete_item, search_for
 
 from flask import request
 
@@ -21,8 +21,17 @@ class Publisher(LogicObject):
 
     @classmethod
     def search(cls):
-        print(request.args)
-        return []
+        q = request.args.get('q')
+        extras = {}
+
+        response = search_for('publisher', q, extras)
+
+        data = {
+            'count': response.hits.total,
+            'objects': [r.to_dict() for r in response.hits]
+        }
+
+        return data
 
     @classmethod
     def get(cls, id):

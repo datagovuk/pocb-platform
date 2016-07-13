@@ -3,6 +3,8 @@ import logging
 
 from elasticsearch import Elasticsearch
 from elasticsearch.client import IndicesClient
+from elasticsearch_dsl import Search
+from elasticsearch_dsl.query import MultiMatch, MatchAll
 
 log = logging.getLogger(__name__)
 
@@ -18,11 +20,23 @@ def init_search(app):
         index_client.delete(app.elastic_index_name)
         index_client.create(app.elastic_index_name)
 
+def search_for(item_type, q, extras=None):
+    from flask import current_app
+
+    es = current_app.elastic_client
+    ix = current_app.elastic_index_name
+
+    s = Search(using=es, index=ix, doc_type=item_type)
+    s = s.query(MultiMatch(query=q, fields=['title']))
+    return s.execute()
+
+
 def index_item(item_type, data):
     from flask import current_app
 
     es = current_app.elastic_client
     ix = current_app.elastic_index_name
+
     if not es.exists( index=ix, doc_type=item_type, id=data['name']):
         log.info("Indexing: {}".format(data['name']))
         es.index(
@@ -39,6 +53,8 @@ def index_item(item_type, data):
             id=data['name'],
             body={'doc': data}
          )
+
+    es.indices.refresh(index=ix)
 
 def delete_item(item_type, id):
     from flask import current_app
