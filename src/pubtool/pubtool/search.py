@@ -18,6 +18,41 @@ def init_search(app):
         index_client.delete(app.elastic_index_name)
         index_client.create(app.elastic_index_name)
 
+def index_item(item_type, data):
+    from flask import current_app
+
+    es = current_app.elastic_client
+    ix = current_app.elastic_index_name
+    if not es.exists( index=ix, doc_type=item_type, id=data['name']):
+        log.info("Indexing: {}".format(data['name']))
+        es.index(
+            index=ix,
+            doc_type=item_type,
+            id=data['name'],
+            body=data
+         )
+    else:
+        log.info("Updating index: {}".format(data['name']))
+        es.update(
+            index=ix,
+            doc_type=item_type,
+            id=data['name'],
+            body={'doc': data}
+         )
+
+def delete_item(item_type, data):
+    from flask import current_app
+
+    es = current_app.elastic_client
+    ix = current_app.elastic_index_name
+    if not es.exists( index=ix, doc_type=item_type, id=data['name']):
+        return
+    else:
+        log.info("Deleting from index: {}".format(data['name']))
+        es.delete(index=ix,
+                             doc_type=item_type,
+                             id=data['name'])
+
 def clear_index(app):
     """ Remove everything from the search index """
     index_client = IndicesClient(app.elastic_client)

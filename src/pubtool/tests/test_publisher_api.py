@@ -4,9 +4,13 @@ from .util import BaseTest
 class PublisherApiTest(BaseTest):
 
     def create_localtest_data(self, mongo):
+        from pubtool.logic import Publisher
         self.mongo = mongo
-        mongo.db.publishers.insert_one({'title': 'Test Publisher', 'name': 'testpub'})
-        mongo.db.publishers.insert_one({'title': 'Test Publisher 2', 'name': 'testpub2'})
+        items = [{'title': 'Test Publisher', 'name': 'testpub'},
+                     {'title': 'Test Publisher 2', 'name': 'testpub2'}]
+        for item in items:
+            Publisher.create(item)
+
 
     def test_list_ok(self):
         response = self.do_get('/api/v1/publisher')

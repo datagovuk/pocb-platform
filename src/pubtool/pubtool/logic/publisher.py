@@ -2,6 +2,7 @@ from .base import LogicObject
 
 from pubtool.database import mongo
 from pubtool.lib.schema import validation_check, ObjectValidationErrors
+from pubtool.search import index_item, delete_item
 
 class Publisher(LogicObject):
 
@@ -12,7 +13,9 @@ class Publisher(LogicObject):
             raise ObjectValidationErrors(errors)
 
         mongo.db.publishers.insert_one(data)
-        return cls.clean(data)
+        obj = cls.clean(data)
+        index_item('publisher', obj)
+        return obj
 
     @classmethod
     def get(cls, id):
@@ -22,6 +25,7 @@ class Publisher(LogicObject):
         errors = validation_check("publisher", data)
         if errors:
             raise ObjectValidationErrors(errors)
+        #index_item('publisher', data)
         return {}
 
     @classmethod
@@ -30,9 +34,10 @@ class Publisher(LogicObject):
         # because atomic ops or something.
         object = Publisher.get(id)
         if not object: return None
-
         mongo.db.publishers.delete_one({'name': id})
-        return cls.clean(object)
+        obj = cls.clean(object)
+        delete_item('publisher', obj)
+        return obj
 
     @classmethod
     def list(cls):
