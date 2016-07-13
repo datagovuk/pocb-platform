@@ -4,6 +4,8 @@ from pubtool.database import mongo
 from pubtool.lib.schema import validation_check, ObjectValidationErrors
 from pubtool.search import index_item, delete_item
 
+from flask import request
+
 class Publisher(LogicObject):
 
     @classmethod
@@ -18,14 +20,20 @@ class Publisher(LogicObject):
         return obj
 
     @classmethod
+    def search(cls):
+        print(request.args)
+        return []
+
+    @classmethod
     def get(cls, id):
+        # TODO(RJ): Attach dependent objects
         return cls.clean(mongo.db.publishers.find_one({'name': id}))
 
     def update(self, id):
         errors = validation_check("publisher", data)
         if errors:
             raise ObjectValidationErrors(errors)
-        #index_item('publisher', data)
+        index_item('publisher', data)
         return {}
 
     @classmethod

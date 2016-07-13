@@ -40,6 +40,7 @@ def api_home():
 # element of the tuple, and the function to call is the second element.
 API = (
     (re.compile("publisher/new$"),  Publisher.create, ["POST"]),
+    (re.compile("publisher/search$"),  Publisher.search, ["GET"]),
     (re.compile("publisher/(.*)"),  Publisher.get, ["GET"]),
     (re.compile("publisher/(.*)"),  Publisher.update, ["POST"]),
     (re.compile("publisher/(.*)"),  Publisher.delete, ["DELETE"]),
