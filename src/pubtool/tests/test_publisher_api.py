@@ -89,7 +89,6 @@ class PublisherApiTest(BaseTest):
         response = self.do_post('/api/v1/publisher/fake?_method=delete', data=None)
         self.assertEqual(response.status_code, 404)
 
-
     def test_delete_ok(self):
         response = self.do_post('/api/v1/publisher/testpub?_method=delete', data=None)
         self.assertEqual(response.status_code, 200)

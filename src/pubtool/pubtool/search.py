@@ -40,18 +40,16 @@ def index_item(item_type, data):
             body={'doc': data}
          )
 
-def delete_item(item_type, data):
+def delete_item(item_type, id):
     from flask import current_app
 
     es = current_app.elastic_client
     ix = current_app.elastic_index_name
-    if not es.exists( index=ix, doc_type=item_type, id=data['name']):
-        return
-    else:
-        log.info("Deleting from index: {}".format(data['name']))
+    if es.exists( index=ix, doc_type=item_type, id=id):
+        log.info("Deleting from index: {}".format(id))
         es.delete(index=ix,
                              doc_type=item_type,
-                             id=data['name'])
+                             id=id)
 
 def clear_index(app):
     """ Remove everything from the search index """

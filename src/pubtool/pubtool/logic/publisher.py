@@ -30,14 +30,12 @@ class Publisher(LogicObject):
 
     @classmethod
     def delete(cls, id):
-        # TODO: We should probably just return a bool or something here
-        # because atomic ops or something.
-        object = Publisher.get(id)
-        if not object: return None
+        if not cls.get(id):
+            return False
+
         mongo.db.publishers.delete_one({'name': id})
-        obj = cls.clean(object)
-        delete_item('publisher', obj)
-        return obj
+        delete_item('publisher', id)
+        return True
 
     @classmethod
     def list(cls):
