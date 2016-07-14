@@ -26,9 +26,7 @@ class BaseTest(TestCase):
         app.config['PROPAGATE_EXCEPTIONS'] = True
         mongo.init_app(app)
 
-        #mongo.db.publishers.remove({})
-
-        init_search(app)
+        init_search(app, clean=True)
         app.before_request(before_request)
 
         login_manager = LoginManager()
@@ -40,12 +38,14 @@ class BaseTest(TestCase):
 
         create_routes(app)
 
+
         self.test_app = app.test_client()
         self.test_app.testing = True
         self.app = app
         return app
 
     def setUp(self):
+        mongo.db.publishers.remove({})
         self.create_localtest_data(mongo)
 
     def tearDown(self):

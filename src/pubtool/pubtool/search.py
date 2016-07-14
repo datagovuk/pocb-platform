@@ -8,7 +8,7 @@ from elasticsearch_dsl.query import MultiMatch, MatchAll
 
 log = logging.getLogger(__name__)
 
-def init_search(app):
+def init_search(app, clean=False):
     """ Create a client and attach it to the app """
     elastic_hosts = json.loads(app.config.get('ELASTIC_HOSTS'))
     app.elastic_client = Elasticsearch(elastic_hosts)
@@ -16,8 +16,12 @@ def init_search(app):
 
     index_client = IndicesClient(app.elastic_client)
     log.info("Checking for index {} at {}".format(app.elastic_index_name, elastic_hosts))
+
     if index_client.exists(app.elastic_index_name):
-        index_client.delete(app.elastic_index_name)
+        if clean:
+            index_client.delete(app.elastic_index_name)
+            index_client.create(app.elastic_index_name)
+    else:
         index_client.create(app.elastic_index_name)
 
 def search_for(item_type, q, extras=None):

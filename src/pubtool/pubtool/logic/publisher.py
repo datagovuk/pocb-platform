@@ -41,10 +41,12 @@ class Publisher(LogicObject):
         # TODO(RJ): Attach dependent objects
         return cls.clean(mongo.db.publishers.find_one({'name': id}))
 
-    def update(self, id):
-        errors = validation_check("publisher", data)
-        if errors:
-            raise ObjectValidationErrors(errors)
+    @classmethod
+    def update(cls, id, data):
+        # TODO(RJ) work out how to skip some validation for updates
+        #errors = validation_check("publisher", data)
+        #if errors:
+        #    raise ObjectValidationErrors(errors)
         index_item('publisher', data)
         return {}
 
