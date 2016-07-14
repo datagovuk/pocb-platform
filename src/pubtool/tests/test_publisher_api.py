@@ -111,4 +111,29 @@ class PublisherApiTest(BaseTest):
         self.assertEqual(response.status_code, 200)
 
         body = self.response_as_json(response)
-        print(body)
+        assert len(body['data']['objects']) == 2
+        assert body['data']['count'] == 2
+
+    def test_search_ok2(self):
+        response = self.do_get('/api/v1/publisher/search?q=2')
+        self.assertEqual(response.status_code, 200)
+
+        body = self.response_as_json(response)
+        assert len(body['data']['objects']) == 1
+        assert body['data']['count'] == 1
+
+    def test_search_ok3(self):
+        response = self.do_get('/api/v1/publisher/search?q=wombles')
+        self.assertEqual(response.status_code, 200)
+
+        body = self.response_as_json(response)
+        assert len(body['data']['objects']) == 0
+        assert body['data']['count'] == 0
+
+    def test_search_fail_missing_q(self):
+        response = self.do_get('/api/v1/publisher/search')
+        self.assertEqual(response.status_code, 400)
+
+        body = self.response_as_json(response)
+        assert body['success'] == False
+        assert body['errors'] == ['Missing parameter, q is required']

@@ -24,6 +24,9 @@ class Publisher(LogicObject):
         q = request.args.get('q')
         extras = {}
 
+        if not q:
+            raise ObjectValidationErrors(["Missing parameter, q is required"])
+
         response = search_for('publisher', q, extras)
 
         data = {
